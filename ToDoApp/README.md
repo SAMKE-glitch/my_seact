@@ -177,3 +177,25 @@ Add a button to delete the task, which will call the method deleteTodo passing t
 <button onClick={() => deleteTodo(todo.id)}>Delete</button>
 
 Start the server, add the task to-do list, and then try to delete it by pressing the delete button. The task must be removed from the list.
+
+
+
+Exercise 3: Adding Checkbox and Toggle function.
+
+You will now add a checkbox to mark task completion. Create a new function, toggleComplete function that uses the map method to iterate through the task and mark them complete inside App.js.
+function toggleComplete(id) {
+    let updatedTodos = [...todos].map((todo) => {
+      if (todo.id === id) {
+        todo.completed = !todo.completed;
+      }
+      return todo;
+    });
+    setTodos(updatedTodos);
+  }
+
+
+Add the following code to add the checkbox component, next to {todo.text}, inside the same div tag.
+<input type="checkbox" id="completed" checked={todo.completed} onChange={() => toggleComplete(todo.id)}/>
+
+
+Start the server, add the task to-do list, and then use the checkbox if the task is completed.
