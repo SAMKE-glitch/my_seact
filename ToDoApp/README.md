@@ -163,3 +163,17 @@ export default App;
 3.Start the server and enter the valid task inside the input box where you can see “Add a new task “. You will see the ouput as below:
 
 
+
+
+Exercise 2: Delete a completed task from the list.
+
+Delete task can be handled in many ways. Now you will write the code using the filter method that filters out the task to be deleted based on the id, and returns the rest of the tasks. Placeholder is added in the App.js file where you need to add the delete to do function.
+function deleteTodo(id) {
+    let updatedTodos = [...todos].filter((todo) => todo.id !== id);
+    setTodos(updatedTodos);
+  }
+
+Add a button to delete the task, which will call the method deleteTodo passing the id of the todo item, on click. A placeholder has been provided to add the button.
+<button onClick={() => deleteTodo(todo.id)}>Delete</button>
+
+Start the server, add the task to-do list, and then try to delete it by pressing the delete button. The task must be removed from the list.
