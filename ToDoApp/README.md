@@ -199,3 +199,177 @@ Add the following code to add the checkbox component, next to {todo.text}, insid
 
 
 Start the server, add the task to-do list, and then use the checkbox if the task is completed.
+
+
+Exercise 4: Edit a added Todo task and submit it.
+
+In the previous exercise, you added the ability to toggle the checkbox for completed task in todos. Now add the functionality to edit the task.
+
+You need to another state to implement the editing functionality.
+const [todoEditing, setTodoEditing] = useState(null);
+
+Now add the submitEdit function in the App.js which will help you to submit the task edit of todo list using the map function.
+function submitEdits(newtodo) {
+    const updatedTodos = [...todos].map((todo) => {
+      if (todo.id === newtodo.id) {
+        todo.text = document.getElementById(newtodo.id).value;
+        }
+        return todo;
+      });
+      setTodos(updatedTodos);
+      setTodoEditing(null);
+    }
+
+You should allow edits only in the edit mode. Provide a button which will enable the edit mode for each task. When edit mode in enabled, switch the task label to a textbox where one can edit the to-do task and submit it back to the list. In addition to that, when the edit mode is enabled, change the Edit button to Submit Edit button, which will invoke submitEdit function when cliked. The code below has been provided for this purpose. It is achieved using ternary operator.
+
+Replace the code inside the return block with the following code.
+        <div id="todo-list">
+          <h1>Todo List</h1>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              id = 'todoAdd'
+            />
+            <button type="submit">Add Todo</button>
+          </form>
+        {todos.map((todo) => (
+
+          <div key={todo.id} className="todo">
+            <div className="todo-text">
+              {/* Add checkbox for toggle complete */}
+              <input
+                type="checkbox"
+                id="completed"
+                checked={todo.completed}
+                onChange={() => toggleComplete(todo.id)}
+              />
+              {/* if it is edit mode, display input box, else display text */}
+              {todo.id === todoEditing ?
+                (<input
+                  type="text"
+                  id = {todo.id}
+                  defaultValue={todo.text}
+                />) :
+                (<div>{todo.text}</div>)
+              }
+            </div>
+            <div className="todo-actions">
+              {/* if it is edit mode, allow submit edit, else allow edit */}
+              {todo.id === todoEditing ?
+              (
+                <button onClick={() => submitEdits(todo)}>Submit Edits</button>
+              ) :
+              (
+                <button onClick={() => setTodoEditing(todo.id)}>Edit</button>
+              )}
+
+              <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+             </div>
+          </div>
+        ))}
+        </div>
+
+Click here to view the complete code.
+import React, {useState} from "react";
+import "./App.css";
+
+const App = () => {
+  const [todos, setTodos] = useState([]);
+
+  const [todoEditing, setTodoEditing] = useState(null);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    let todo = document.getElementById('todoAdd').value
+    const newTodo = {
+      id: new Date().getTime(),
+      text: todo.trim(),
+      completed: false,
+    };
+    if (newTodo.text.length > 0 ) {
+        setTodos([...todos].concat(newTodo));
+    } else {
+
+        alert("Enter Valid Task");
+    }
+    document.getElementById('todoAdd').value = ""
+  }
+  function deleteTodo(id) {
+    let updatedTodos = [...todos].filter((todo) => todo.id !== id);
+    setTodos(updatedTodos);
+  }
+
+  function toggleComplete(id) {
+    let updatedTodos = [...todos].map((todo) => {
+      if (todo.id === id) {
+        todo.completed = !todo.completed;
+      }
+      return todo;
+    });
+    setTodos(updatedTodos);
+  }
+
+  function submitEdits(newtodo) {
+    const updatedTodos = [...todos].map((todo) => {
+      if (todo.id === newtodo.id) {
+        todo.text = document.getElementById(newtodo.id).value;
+        }
+        return todo;
+      });
+      setTodos(updatedTodos);
+      setTodoEditing(null);
+    }
+
+    return (
+        <div id="todo-list">
+          <h1>Todo List</h1>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              id = 'todoAdd'
+            />
+            <button type="submit">Add Todo</button>
+          </form>
+{todos.map((todo) => (
+
+  <div key={todo.id} className="todo">
+    <div className="todo-text">
+      {/* Add checkbox for toggle complete */}
+      <input
+        type="checkbox"
+        id="completed"
+        checked={todo.completed}
+        onChange={() => toggleComplete(todo.id)}
+      />
+      {/* if it is edit mode, display input box, else display text */}
+      {todo.id === todoEditing ?
+        (<input
+          type="text"
+          id = {todo.id}
+          defaultValue={todo.text}
+        />) :
+        (<div>{todo.text}</div>)
+      }
+    </div>
+    <div className="todo-actions">
+      {/* if it is edit mode, allow submit edit, else allow edit */}
+      {todo.id === todoEditing ?
+      (
+        <button onClick={() => submitEdits(todo)}>Submit Edits</button>
+      ) :
+      (
+        <button onClick={() => setTodoEditing(todo.id)}>Edit</button>
+      )}
+
+      <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+     </div>
+  </div>
+))}
+        </div>
+      );
+    };
+
+export default App;
+
+Start the server, add the task to-do list and edit it using the edit button.
