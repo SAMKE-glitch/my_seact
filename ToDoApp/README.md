@@ -71,3 +71,95 @@ The todoapp UI will appear on the browser as seen in the image below.
 You cannot add any task to it yet. We will be adding the functionality to do this, in the next part of the lab.
 
 To stop the server, go to the terminal in the lab environment and press ctrl + c
+
+
+Exercise 1: Create and Implement code to add task.
+
+In App.js file there is a placeholder where you need to add the handleSubmit function. Now, give the application the power to add a new task for the to-do list app. You will add a handleSubmit function that can will add the task to the list.
+The handleSubmit handler will prevent the default action that would normally be taken on the form and add a new Task using the latest value that is in the input field. The user input is validated to ensure the input is non-empty and doesn’t have preceeding or succeeding spaces.
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    let todo = document.getElementById('todoAdd').value
+    const newTodo = {
+      id: new Date().getTime(),
+      text: todo.trim(),
+      completed: false,
+    };
+    if (newTodo.text.length > 0 ) {
+        setTodos([...todos].concat(newTodo));
+    } else {
+
+        alert("Enter Valid Task");
+    }
+    document.getElementById('todoAdd').value = ""
+  }
+
+
+On click of the Add Todo button, the form is submitted and the task is added to the todo list. The code uses the map to iterate through the todo list, and renders each task as a list item. Using useState, this component registers a state with value todo and a function for updating it setTodo.
+Paste the below code inside the return function of App, replacing the existing content.
+<div id="todo-list">
+    <h1>Todo List</h1>
+        <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              id = 'todoAdd'
+            />
+            <button type="submit">Add Todo</button>
+        </form>
+        {todos.map((todo) =>
+            <div className="todo" key={todo.id}>
+                <div className="todo-text">{todo.text}</div>
+            {/* insert delete button below this line */}
+            </div>)}
+</div>
+
+Click here to view the complete code.
+import React,{useState} from "react";
+import "./App.css";
+
+const App = () => {
+  const [todos, setTodos] = useState([]);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    let todo = document.getElementById('todoAdd').value
+    const newTodo = {
+      id: new Date().getTime(),
+      text: todo.trim(),
+      completed: false,
+    };
+    if (newTodo.text.length > 0 ) {
+        setTodos([...todos].concat(newTodo));
+    } else {
+
+        alert("Enter Valid Task");
+    }
+    document.getElementById('todoAdd').value = ""
+  }
+
+    return (
+      <div id="todo-list">
+        <h1>Todo List</h1>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              id = 'todoAdd'
+            />
+            <button type="submit">Add Todo</button>
+        </form>
+        {todos.map((todo) => <div className="todo" key={todo.id}>
+            <div className="todo-text">{todo.text}</div>
+
+        </div>)}
+        </div>
+  );
+};
+
+export default App;
+
+3.Start the server and enter the valid task inside the input box where you can see “Add a new task “. You will see the ouput as below:
+
+
